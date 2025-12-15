@@ -319,8 +319,9 @@ export default function ChatPage({ params }: { params: { bidId: string } }) {
             <div className="space-y-4 py-4">
               {messages.map((msg, index) => {
                 const isOwn = msg.senderType === user?.userType;
+                const prevMessage = index > 0 ? messages[index - 1] : null;
                 const showDateSeparator = index === 0 ||
-                  new Date(msg.createdAt).toDateString() !== new Date(messages[index - 1].createdAt).toDateString();
+                  (prevMessage && new Date(msg.createdAt).toDateString() !== new Date(prevMessage.createdAt).toDateString());
 
                 return (
                   <div key={msg._id}>
