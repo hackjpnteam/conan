@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
 type JobLite = {
@@ -14,7 +14,7 @@ type JobLite = {
   status?: string;
 };
 
-export default function JobsPage() {
+function JobsContent() {
   const searchParams = useSearchParams();
   const [jobs, setJobs] = useState<JobLite[]>([]);
   const [loading, setLoading] = useState(true);
@@ -197,5 +197,18 @@ export default function JobsPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function JobsPage() {
+  return (
+    <Suspense fallback={
+      <div className="text-center py-16 sm:py-20">
+        <div className="loading-spinner w-8 h-8 sm:w-10 sm:h-10 mx-auto border-4"></div>
+        <p className="text-gray-500 mt-4 sm:mt-6 text-sm sm:text-base">読み込み中...</p>
+      </div>
+    }>
+      <JobsContent />
+    </Suspense>
   );
 }
